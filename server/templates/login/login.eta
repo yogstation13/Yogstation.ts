@@ -1,0 +1,42 @@
+<% layout("layout") %>
+
+<% content("title") ${ %>
+	Login
+<% } %>
+
+<h2 class="title is-2 has-text-centered">Admin Login</h2>
+
+<div class="columns is-centered">
+	<div class="column is-half">
+		<div class="box">
+
+			<form id="login-form" method="POST">
+				<div class="field">
+					<div class="label">Username</div>
+					<div class="control has-icons-left">
+						<input name="username" class="input" type="text" maxlength="32" placeholder="Enter your username..." />
+
+						<span class="icon is-small is-left">
+							<i class="fas fa-user"></i>
+						</span>
+					</div>
+				</div>
+
+				<div class="field">
+					<div class="label">Password</div>
+					<div class="control has-icons-left">
+						<input name="password" class="input" type="password" maxlength="32" placeholder="Enter your password..." />
+
+						<span class="icon is-small is-left">
+							<i class="fas fa-key"></i>
+						</span>
+					</div>
+				</div>
+
+				<div class="control">
+					<button class="button is-primary is-fullwidth">Login</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,49 @@
+{
+  //Array of ips and CIDR to trust for X-Forwarded-*
+  trustProxies: [],
+  //::      all ip4 and ip6
+  //::1     all ip6
+  //0.0.0.0 all ip4
+  address: "::",
+  port: 8080,
+  publicUrl: "http://localhost:8080",
+
+  session: {
+    //Array of hex strings to use as keys
+    signingKeys: [],
+    //Duration of session in minutes
+    expiry: 360
+  },
+
+  links: {
+    forums: "https://forums.yogstation.net/",
+    wiki: "https://wiki.yogstation.net/"
+  },
+  //Cache compiled templates
+  cacheTemplates: true,
+
+  dbPrefix: "erro_",
+  itemsPerPage: 20,
+
+  servers: {
+    //There must always be a server named primary
+    primary: {
+      sqlname: "yogstation",
+      host: "game.yogstation.net",
+      port: 4133,
+      name: "YogStation",
+      comms_key: ""
+    }
+  },
+
+  forums: {
+    apiUrl: "https://forums.yogstation.net/api",
+    apiKey: "",
+    groups: {
+      host: 43,
+      council: 8,
+      headdev: 30,
+      staff: 28
+    }
+  }
+}

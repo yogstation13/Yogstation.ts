@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Server (no static/tpl)" pattern="file[yogstation.ts]:server//*&amp;&amp;!file[yogstation.ts]:server/static//*&amp;&amp;!file[yogstation.ts]:server/templates//*" />
+</component>

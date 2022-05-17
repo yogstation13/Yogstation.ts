@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <title>Yogstation - <% slot("title") %></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="<%= url %>" />
+
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+  <link rel="stylesheet" href="/static/css/main.css" />
+
+  <link rel="stylesheet" href="/static/css/qwerty-bulma.min.css" />
+  <link rel="stylesheet" href="/static/css/bulma-slider.min.css" />
+
+  <script src="/static/js/jquery.min.js"></script>
+  <script src="/static/js/vue.min.js"></script>
+
+  <script src="/static/js/main.js"></script>
+
+  <% slot("head") %>
+
+</head>
+
+<body>
+<nav id="navbar" class="navbar is-dark" role="navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">Yogstation 13</a>
+
+    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar-links"
+       v-on:click="nav_open = !nav_open"
+       v-bind:class="{ 'is-active' : nav_open }"
+    >
+
+      <span></span> <!-- magic to make the burger button appear -->
+      <span></span>
+      <span></span>
+    </a>
+  </div>
+
+  <div id="navbar-links" class="navbar-menu"
+       v-bind:class="{ 'is-active' : nav_open }"
+  >
+    <div class="navbar-end">
+      <a class="navbar-item" href="<%= cfg.get("links.forums") %>">Forums</a>
+      <a class="navbar-item" href="<%= cfg.get("links.wiki") %>">Wiki</a>
+      <a class="navbar-item" href="/players">Directory</a>
+      <a class="navbar-item" href="/bans">Ban List</a>
+      <a class="navbar-item" href="/rounds">Round List</a>
+      <a class="navbar-item" href="/library">Library</a>
+      <a class="navbar-item" href="/donate">Donate</a>
+
+      <% if (isAdmin()) { %>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">Admin</a>
+
+          <div class="navbar-dropdown">
+            <% if (hasPerm("ban.add")) { %>
+              <a class="navbar-item" href="/bans/add">Add Ban</a>
+            <% } %>
+
+            <% if (hasPerm("action_log.access")) { %>
+              <a class="navbar-item" href="/admin/action_log">Action Log</a>
+            <% } %>
+
+            <% if (hasPerm("loa.add")) { %>
+              <a class="navbar-item" href="/admin/loa">LOAs</a>
+            <% } %>
+
+            <% if (hasPerm("transaction_log.access")) { %>
+              <a class="navbar-item" href="/admin/donors">Donors</a>
+            <% } %>
+
+            <% if (hasPerm("activity.access")) { %>
+              <a class="navbar-item" href="/admin/activity">Activity</a>
+            <% } %>
+
+            <a class="navbar-item" href="/logout">Logout</a>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</nav>
+
+<section class="section" id="content">
+  <% const flashes = getFlashes() %>
+  <% if (flashes) { %>
+    <div class="flashes-container columns is-centered">
+      <div class="flashes column is-half">
+        <% for (const [category, messages] of Object.entries(flashes)) { %>
+          <% for (const message of messages) { %>
+            <div class="notification has-text-centered has-text-weight-bold is-fullwidth pt-2 pb-2
+              <%= category === "success" ? " is-success" : category === "error" ? " is-danger" : "" %>
+            ">
+              <%~ message %>
+            </div>
+          <% } %>
+        <% } %>
+      </div>
+    </div>
+  <% } %>
+
+  <%~ it.body %>
+</section>
+
+<footer class="footer">
+  <div class="has-text-centered">
+    <strong>YogStation</strong> website made with &lt;3 by <a href="https://github.com/qwertyquerty">qwerty</a><br/>
+    Ported to typescript by <a href="https://github.com/alexkar598">alexkar598</a><br/>
+    <br/>
+    <% if (!isAdmin()) { %>
+      <a href="/login">Admin Login</a>
+    <% }else { %>
+      Welcome <b><%= session.displayName %></b> |
+        <form method="post" action="/logout" id="logout" style="display: inline;">
+          <%~ include("csrf") %>
+          <a onclick="document.getElementById('logout').submit()">Logout</a>
+        </form>
+    <% } %>
+    <br/>
+  </div>
+</footer>
+</body>
+</html>

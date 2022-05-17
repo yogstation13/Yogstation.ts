@@ -1,0 +1,15 @@
+{
+  session: {
+    signingKeys: ["1ae2833c4fd25abe5548bea567eb6d1a97abfee9d45e29796883ecfacafefd0b"]
+  },
+  cacheTemplates: false,
+  servers: {
+    primary: {
+      comms_key: ""
+    }
+  },
+  forums: {
+    apiKey: "Fq1_BsQux-rpiPbYfBj1IKr7hccV_3jI",
+    //apiUrl: "https://webhook.site/b3638183-a614-408d-9714-ee0be211b75c"
+  }
+}

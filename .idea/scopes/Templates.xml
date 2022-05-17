@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Templates" pattern="file[yogstation.ts]:server/plugins/partials//*||file[yogstation.ts]:server/templates//*" />
+</component>

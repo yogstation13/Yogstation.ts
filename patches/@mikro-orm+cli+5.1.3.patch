@@ -1,0 +1,14 @@
+diff --git a/node_modules/@mikro-orm/cli/cli.js b/node_modules/@mikro-orm/cli/cli.js
+index 3763df8..e903527 100755
+--- a/node_modules/@mikro-orm/cli/cli.js
++++ b/node_modules/@mikro-orm/cli/cli.js
+@@ -1,6 +1,8 @@
+-#!/usr/bin/env node
++#!/usr/bin/env -S NODE_OPTIONS="--loader ts-node/esm" node
+ "use strict";
+ Object.defineProperty(exports, "__esModule", { value: true });
++//Shitty typescript hack
++process.env["MIKRO_ORM_DYNAMIC_IMPORTS"] = "1"
+ // eslint-disable-next-line @typescript-eslint/no-var-requires
+ require('yargonaut')
+     .style('blue')

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="LanguageInjectionConfiguration">
+    <injection language="EJS" injector-id="js">
+      <display-name>HTML in JS strings</display-name>
+      <value-pattern>^&lt;%</value-pattern>
+      <single-file value="true" />
+      <place><![CDATA[isHtmlLikeText()]]></place>
+    </injection>
+    <injection language="EJS" injector-id="js">
+      <display-name>HTML template literal</display-name>
+      <single-file value="true" />
+      <place><![CDATA[taggedString("html")]]></place>
+      <templateTag>html</templateTag>
+    </injection>
+  </component>
+</project>

@@ -1,0 +1,45 @@
+diff --git a/node_modules/@fastify/secure-session/index.d.ts b/node_modules/@fastify/secure-session/index.d.ts
+index 7e0dc76..0196475 100755
+--- a/node_modules/@fastify/secure-session/index.d.ts
++++ b/node_modules/@fastify/secure-session/index.d.ts
+@@ -2,7 +2,8 @@
+ import { CookieSerializeOptions } from "@fastify/cookie";
+ import { FastifyPlugin, FastifyLoggerInstance } from "fastify";
+
+-export interface Session {
++//Adds gettor/settors for session
++export type Session = Partial<SessionData> & {
+   changed: boolean;
+   deleted: boolean;
+   get<Key extends keyof SessionData>(key: Key): SessionData[Key] | undefined;
+diff --git a/node_modules/@fastify/secure-session/index.js b/node_modules/@fastify/secure-session/index.js
+index 8c52ca5..d72aecd 100755
+--- a/node_modules/@fastify/secure-session/index.js
++++ b/node_modules/@fastify/secure-session/index.js
+@@ -142,9 +143,8 @@ module.exports = fp(function (fastify, options, next) {
+       return null
+     }
+ 
+-    const session = new Proxy(new Session(JSON.parse(msg)), sessionProxyHandler)
+-    session.changed = signingKeyRotated
+-    return session
++    //Fixes sessions always being tainted
++    return new Proxy(new Session(JSON.parse(msg), signingKeyRotated), sessionProxyHandler)
+   })
+ 
+   fastify.decorate('createSecureSession', (data) => new Proxy(new Session(data), sessionProxyHandler))
+@@ -216,10 +216,12 @@ module.exports = fp(function (fastify, options, next) {
+ })
+ 
+ class Session {
+-  constructor (obj) {
++  //Fixes sessions always being tainted
++  constructor (obj, changed) {
+     this[kObj] = obj
+     this[kCookieOptions] = null
+-    this.changed = false
++    //Fixes sessions always being tainted
++    this.changed = changed
+     this.deleted = false
+   }
+ 

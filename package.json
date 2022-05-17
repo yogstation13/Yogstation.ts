@@ -1,0 +1,14 @@
+{
+  "name": "yogstation.ts",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "postinstall": "patch-package"
+  },
+  "workspaces": [
+    "server"
+  ],
+  "dependencies": {
+    "patch-package": "^6.4.7"
+  }
+}

@@ -1,0 +1,126 @@
+<% layout("layout") %>
+<% load("csrf") %>
+<% load("ckeyLink") %>
+
+<% content("title") ${ %>
+    Panel - LOAs
+<% } %>
+
+
+<h2 class="title is-2 has-text-centered">Manage LOAs</h2>
+
+<div class="columns is-centered">
+    <div class="column is-four-fifths">
+
+        <form id="set-loa-form" method="POST">
+            <%~ csrf() %>
+
+            <div class="field">
+                <label for="reason" class="label">Reason</label>
+                <div class="control">
+                    <textarea
+                            class="textarea is-fullwidth"
+                            id="reason"
+                            maxlength="2048"
+                            name="reason"
+                            placeholder="Enter the reason for the LOA..."
+                            required
+                            rows="2"
+                    ></textarea>
+                </div>
+            </div>
+
+            <div class="columns">
+                <div class="field column">
+                    <label for="ckey" class="label">CKEY</label>
+                    <div class="control has-icons-left">
+                        <input
+                                class="input is-fullwidth"
+                                id="ckey"
+                                name="ckey"
+                                placeholder="Enter the CKEY of the user..."
+                                required
+                                type="text"
+                                value="<%= session.ckey %>"
+                                <%= !hasPerm("loa.others") ? " readonly disabled" : "" %>
+                        >
+                        <span class="icon is-small is-left">
+									<i class="fas fa-user"></i>
+								</span>
+                    </div>
+                </div>
+
+                <div class="field column">
+                    <label for="expiration_time" class="label">Expiration Date</label>
+                    <div class="control has-icons-left">
+                        <input class="input is-fullwidth" id="expiration_time" name="expiration_time" required type="date" value="">
+                        <span class="icon is-small is-left">
+									<i class="fas fa-clock"></i>
+								</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field has-text-right">
+                <button class="button is-success">Set LOA</button>
+            </div>
+
+            {{ form_errors(form_set_loa) }}
+        </form>
+
+        <br/>
+
+        <div class="box">
+            <table class="table is-striped is-hoverable is-fullwidth">
+                <thead>
+                <tr>
+                    <th>CKEY</th>
+                    <th>Start Date</th>
+                    <th>Expiry Date</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Tools</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% for (const loa of loas) { %>
+                    <tr>
+                        <td><%~ ckeyLink(loa.ckey.ckey) %></td>
+
+                        <td>
+                            <time datetime="<%= loa.time.toISOString() %>">
+                                <%= `${loa.time.getUTCFullYear()}-${(loa.time.getUTCMonth() + 1).toString().padStart(2, "0")}-${loa.time.getUTCDate().toString().padStart(2, "0")}` %>
+                            </time>
+                        </td>
+
+                        <td>
+                            <time datetime="<%= loa.expiryTime?.toISOString() %>"><%= loa.expiryTime ? relativeDate(loa.expiryTime) : "" %></time>
+                        </td>
+
+                        <td><%= loa.reason %></td>
+
+                        <td>
+                            <% if (loa.revoked) { %>
+                                <div class="tag is-primary is-medium has-text-centered">Revoked</div>
+                            <% } else if (new Date() > loa.expiryTime) { %>
+                                <div class="tag is-primary is-medium has-text-centered">Expired</div>
+                            <% } else { %>
+                                <div class="tag is-danger is-medium has-text-centered">Active</div>
+                            <% } %>
+                        </td>
+
+                        <td>
+                            <div class="buttons">
+                                <form method="post" action="/admin/loa/<%= loa.id %>/revoke">
+                                    <%~ csrf() %>
+                                    <button class="button">Revoke</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

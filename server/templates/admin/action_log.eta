@@ -1,0 +1,47 @@
+<% layout("layout") %>
+
+<% load("ckeyLink") %>
+<% load("searchForm") %>
+<% load("pagination") %>
+
+<% content("title") ${ %>
+    Panel - Action Log
+<% } %>
+
+<h2 class="title is-2 has-text-centered">Webmin Action Log</h2>
+
+<div class="columns is-centered">
+    <div class="column is-four-fifths">
+
+        <%~ searchForm(search_query, "Search by admin, target, or description...") %>
+        <br>
+        <%~ pagination() %>
+
+        <table class="table is-striped is-hoverable is-fullwidth">
+            <thead>
+            <tr>
+                <th>Admin</th>
+                <th>Target</th>
+                <th>Description</th>
+                <th width="250px">Timestamp</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <% for (entry of action_log) { %>
+                <tr>
+                    <td><%~ ckeyLink(entry.adminid.ckey) %></td>
+
+                    <td><%~ ckeyLink(entry.target.ckey) %></td>
+
+                    <td><%= entry.description %></td>
+
+                    <td><time datetime="<%= entry.timestamp.toISOString() %>"><%= entry.timestamp.toLocaleString() %></time></td>
+                </tr>
+            <% } %>
+            </tbody>
+        </table>
+
+        <%~ pagination() %>
+    </div>
+</div>

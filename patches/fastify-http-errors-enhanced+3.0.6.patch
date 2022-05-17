@@ -1,0 +1,23 @@
+diff --git a/node_modules/fastify-http-errors-enhanced/dist/validation.js b/node_modules/fastify-http-errors-enhanced/dist/validation.js
+index 46cf2b4..c54b7c0 100644
+--- a/node_modules/fastify-http-errors-enhanced/dist/validation.js
++++ b/node_modules/fastify-http-errors-enhanced/dist/validation.js
+@@ -225,11 +225,14 @@ export function compileResponseValidationSchema(configuration) {
+     for (const [instance, validators, schemas] of this[kHttpErrorsEnhancedResponseValidations]){
+         // @ts-expect-error
+         const compiler = new AjvConstructor({
+-            // The fastify defaults, with the exception of removeAdditional and coerceTypes, which have been reversed
+-            removeAdditional: false,
+-            useDefaults: true,
+             coerceTypes: false,
+-            allErrors: true
++            //Fixes options leading to invalid validation
++            removeAdditional: true,
++            // Explicitly set allErrors to `false`.
++            // When set to `true`, a DoS attack is possible.
++            allErrors: false,
++            nullable: true,
++            strictSchema: false
+         });
+         compiler.addSchema(Object.values(instance.getSchemas()));
+         compiler.addKeyword('example');

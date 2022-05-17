@@ -1,0 +1,38 @@
+diff --git a/node_modules/@mikro-orm/core/enums.d.ts b/node_modules/@mikro-orm/core/enums.d.ts
+index 5f4d2df..8a5f349 100644
+--- a/node_modules/@mikro-orm/core/enums.d.ts
++++ b/node_modules/@mikro-orm/core/enums.d.ts
+@@ -57,7 +57,8 @@ export declare type QueryOrderKeys<T> = QueryOrderKeysFlat | QueryOrderMap<T>;
+ export declare type QueryOrderMap<T> = {
+     [K in keyof T as ExcludeFunctions<T, K>]?: QueryOrderKeys<ExpandProperty<T[K]>>;
+ };
+-export declare type QBQueryOrderMap<T> = QueryOrderMap<T> | Dictionary;
++//Removes unsafe types
++export declare type QBQueryOrderMap<T> = QueryOrderMap<T>;
+ export interface FlatQueryOrderMap {
+     [x: string]: QueryOrderKeysFlat;
+ }
+diff --git a/node_modules/@mikro-orm/core/typings.d.ts b/node_modules/@mikro-orm/core/typings.d.ts
+index 815e2ed..7596c23 100644
+--- a/node_modules/@mikro-orm/core/typings.d.ts
++++ b/node_modules/@mikro-orm/core/typings.d.ts
+@@ -78,7 +78,8 @@ declare type ExpandObject<T> = T extends object ? T extends Scalar ? never : {
+ export declare type Query<T> = T extends object ? T extends Scalar ? never : FilterQuery<T> : FilterValue<T>;
+ export declare type ObjectQuery<T> = ExpandObject<T> & OperatorMap<T>;
+ export declare type FilterQuery<T> = ObjectQuery<T> | NonNullable<ExpandScalar<Primary<T>>> | T | FilterQuery<T>[];
+-export declare type QBFilterQuery<T = any> = FilterQuery<T> | Dictionary;
++//Removes unsafe types
++export declare type QBFilterQuery<T = any> = FilterQuery<T>;
+ export interface IWrappedEntity<T extends AnyEntity<T>, PK extends keyof T | unknown = PrimaryProperty<T>, P extends string = string> {
+     isInitialized(): boolean;
+     isTouched(): boolean;
+@@ -157,7 +158,8 @@ export declare type EntityData<T> = {
+ export declare type RequiredEntityData<T> = EntityData<T> & {
+     [K in keyof T as RequiredKeys<T, K>]: EntityDataItem<T[K]>;
+ };
+-export declare type EntityDictionary<T> = EntityData<T> & Dictionary;
++//Removes unsafe types
++export declare type EntityDictionary<T> = EntityData<T>;
+ declare type Relation<T> = {
+     [P in keyof T as T[P] extends unknown[] | Record<string | number | symbol, unknown> ? P : never]?: T[P];
+ };

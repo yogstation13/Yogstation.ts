@@ -1,0 +1,72 @@
+{
+  "name": "yogstation.ts-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "nodemon": "MIKRO_ORM_DYNAMIC_IMPORTS=true NODE_OPTIONS=\"--loader ts-node/esm\" npx nodemon src/index.ts"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "author": "",
+  "license": "AGPL",
+  "dependencies": {
+    "@dnlup/fastify-traps": "^1.2.0",
+    "@fastify/autoload": "^4.0.0",
+    "@fastify/flash": "^4.0.1",
+    "@fastify/formbody": "^6.0.0",
+    "@fastify/helmet": "^8.0.0",
+    "@fastify/request-context": "^3.0.0",
+    "@fastify/secure-session": "^4.0.0",
+    "@fastify/sensible": "^4.1.0",
+    "@fastify/static": "^5.0.2",
+    "@mgcrea/fastify-request-logger": "^0.5.2",
+    "@mgcrea/pino-pretty-compact": "^0.5.0",
+    "@mikro-orm/core": "^5.1.3",
+    "@mikro-orm/mariadb": "^5.1.3",
+    "@sinclair/typebox": "^0.23.5",
+    "@yaireo/relative-time": "^1.0.2",
+    "axios": "^0.27.2",
+    "config": "^3.3.7",
+    "eta": "^1.12.3",
+    "fastify": "^3.29.0",
+    "fastify-csrf": "^3.1.0",
+    "fastify-http-errors-enhanced": "^3.0.6",
+    "fastify-plugin": "^3.0.1",
+    "hyperid": "^3.0.1",
+    "moize": "^6.1.1",
+    "point-of-view": "^5.2.1"
+  },
+  "devDependencies": {
+    "@mikro-orm/cli": "^5.1.3",
+    "@mikro-orm/entity-generator": "^5.1.3",
+    "@mikro-orm/reflection": "^5.1.3",
+    "@types/config": "^0.0.41",
+    "@types/node": "^17.0.33",
+    "@types/yaireo__relative-time": "^1.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.23.0",
+    "@typescript-eslint/parser": "^5.23.0",
+    "eslint": "^8.15.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-node": "^11.1.0",
+    "fastify-error-page": "^4.0.0",
+    "nodemon": "^2.0.16",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "."
+    ],
+    "ignore": [
+      "temp"
+    ],
+    "ext": "json,ts,js,json5"
+  },
+  "mikro-orm": {
+    "useTsNode": true
+  }
+}

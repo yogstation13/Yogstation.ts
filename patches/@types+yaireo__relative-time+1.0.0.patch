@@ -1,0 +1,14 @@
+diff --git a/node_modules/@types/yaireo__relative-time/index.d.ts b/node_modules/@types/yaireo__relative-time/index.d.ts
+index 2ccde48..3e48cea 100755
+--- a/node_modules/@types/yaireo__relative-time/index.d.ts
++++ b/node_modules/@types/yaireo__relative-time/index.d.ts
+@@ -13,7 +13,8 @@ interface Settings {
+     /**
+      * @default { numeric: 'auto' }
+      */
+-    options?: Intl.DateTimeFormatOptions;
++    //Fixes incorrect types
++    options?: Intl.RelativeTimeFormatOptions;
+ }
+ 
+ declare class RelativeTime {
