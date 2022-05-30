@@ -5,6 +5,9 @@
       <scope name="Templates" level="WEAK WARNING" enabled="false" />
     </inspection_tool>
     <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="GrazieInspection" enabled="true" level="TYPO" enabled_by_default="true">
+      <scope name="DB Entities" level="TYPO" enabled="false" />
+    </inspection_tool>
     <inspection_tool class="JSUnresolvedFunction" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <scope name="Templates" level="WEAK WARNING" enabled="false" />
     </inspection_tool>
@@ -12,5 +15,18 @@
       <scope name="Templates" level="WEAK WARNING" enabled="false" />
     </inspection_tool>
     <inspection_tool class="JSUnusedGlobalSymbols" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LanguageDetectionInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <scope name="DB Entities" level="WARNING" enabled="false" />
+    </inspection_tool>
+    <inspection_tool class="SpellCheckingInspection" enabled="true" level="TYPO" enabled_by_default="true">
+      <scope name="DB Entities" level="TYPO" enabled="false">
+        <option name="processCode" value="true" />
+        <option name="processLiterals" value="true" />
+        <option name="processComments" value="true" />
+      </scope>
+      <option name="processCode" value="true" />
+      <option name="processLiterals" value="true" />
+      <option name="processComments" value="true" />
+    </inspection_tool>
   </profile>
 </component>

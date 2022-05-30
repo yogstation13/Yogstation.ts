@@ -100,7 +100,7 @@ const plugin: FastifyPluginAsync = async fastify => {
     includeViewExtension: true,
     defaultContext: context,
   });
-  fastify.addHook("preHandler", (req, res, done) => {
+  fastify.addHook("onRequest", (req, res, done) => {
     res.locals = {
       session: req.session.data(),
       url: req.url,

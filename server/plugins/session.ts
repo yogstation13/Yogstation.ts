@@ -2,7 +2,6 @@ import SecureSessionPlugin from "@fastify/secure-session";
 import config from "config";
 import type { FastifyPluginCallback } from "fastify";
 import fp from "fastify-plugin";
-import { ActionLog } from "../dbentities/ActionLog.js";
 import type { FlashCategory } from "./flash.js";
 
 declare module "@fastify/secure-session" {
@@ -33,7 +32,7 @@ const plugin: FastifyPluginCallback = (fastify, _, done) => {
     },
   });
 
-  fastify.addHook("preHandler", async (req, res) => {
+  fastify.addHook("onRequest", async (req, res) => {
     req.requestContext.set("session", req.session);
 
     if (req.session.loginTimestamp) {

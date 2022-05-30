@@ -7,9 +7,10 @@ const plugin: FastifyPluginCallback = (fastify, _, done) => {
 
   fastify.addHook<{ Body: { _csrf?: string } }>("preValidation", async (req, res) => {
     if (req.method !== "POST") return;
-    if (req.body._csrf !== req.session._csrf) return res.badRequest("Missing CSRF token.");
+    if (req.body?._csrf !== req.session._csrf) return res.badRequest("Missing CSRF token.");
     if (!req.headers["sec-fetch-site"]) return;
-    if (req.headers["sec-fetch-site"] !== "same-origin") return res.badRequest("Same origin fetch metadata is missing.");
+    if (req.headers["sec-fetch-site"] !== "same-origin" && req.headers["sec-fetch-site"] !== "none")
+      return res.badRequest("Same origin fetch metadata is missing.");
   });
 
   fastify.register(fastifyCsrf, {

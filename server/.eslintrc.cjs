@@ -21,6 +21,8 @@ module.exports = {
     "@typescript-eslint/no-this-alias": "off",
     "@typescript-eslint/no-floating-promises": "off",
     "node/no-missing-import": "off",
-    "import/no-unresolved": "off"
+    "import/no-unresolved": "off",
+    "node/no-unpublished-import": "off",
+    "@typescript-eslint/no-non-null-assertion": "off"
   }
 };

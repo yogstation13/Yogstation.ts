@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-  <title>Yogstation - <% slot("title") %></title>
+  <title>Yogstation - <%- slot("title") %></title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -78,7 +78,7 @@
               <a class="navbar-item" href="/admin/activity">Activity</a>
             <% } %>
 
-            <a class="navbar-item" href="/logout">Logout</a>
+            <a class="navbar-item" onclick="document.getElementById('logout').submit()">Logout</a>
           </div>
         </div>
       <% } %>

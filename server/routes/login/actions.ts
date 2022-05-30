@@ -5,8 +5,6 @@ import { ActionLog } from "../../dbentities/ActionLog.js";
 import { validateCredentials } from "../../util/forums.js";
 import { ckeyify, isWebPerm } from "../../util/index.js";
 
-function validateRedirect(url: string) {}
-
 const plugin: FastifyPluginCallback = (fastify, _, done) => {
   const loginQS = Type.Object({
     next: Type.Optional(Type.String()),

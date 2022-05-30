@@ -2,7 +2,7 @@ import type { FastifyPluginCallback } from "fastify";
 import fp from "fastify-plugin";
 import type { TemplateHelperOpts } from "../template.js";
 
-//Call include with it by default unless overwritten
+//Call "include" with "it" by default unless overwritten
 const plugin: FastifyPluginCallback<TemplateHelperOpts> = (_, opts, done) => {
   opts.plugins.push({
     processFnString: (fnStr: string) => {

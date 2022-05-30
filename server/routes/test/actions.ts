@@ -2,7 +2,7 @@ import { Static, Type } from "@sinclair/typebox";
 import type { FastifyPluginCallback } from "fastify";
 import { Loa } from "../../dbentities/Loa.js";
 import { getFrontpageStaff } from "../../util/forums.js";
-import { authRoute, WebPermission, webPermissions } from "../../util/index.js";
+import { authRoute, getValidations } from "../../util/index.js";
 
 const plugin: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get("", (req, res) => {
@@ -13,6 +13,7 @@ const plugin: FastifyPluginCallback = (fastify, _, done) => {
 
   const loginQueryParams = Type.Object({
     username: Type.String(),
+    test: Type.Integer(),
   });
   fastify.get<{
     Querystring: Static<typeof loginQueryParams>;
@@ -22,8 +23,14 @@ const plugin: FastifyPluginCallback = (fastify, _, done) => {
       schema: {
         querystring: loginQueryParams,
       },
+      attachValidation: true,
     },
     (req, res) => {
+      if (req.validationError) {
+        res.view("test");
+        return;
+      }
+
       req.session.identity = `local:${req.query.username}`;
       req.session.displayName = req.query.username;
       res.send(req.session.data());
@@ -62,15 +69,14 @@ const plugin: FastifyPluginCallback = (fastify, _, done) => {
     },
   );
 
-  fastify.get("/wtf", async (req, res) => {
+  fastify.get("/wtf", async req => {
     const val = await req.em.findOne(Loa, 537);
     console.log(val?.time.toLocaleString());
     return val;
   });
 
-  fastify.get("/error", async (req, res) => {
+  fastify.get("/error", () => {
     throw Error("lol");
-    return res.view("error");
   });
 
   done();

@@ -1,4 +1,4 @@
-import { Collection, Entity, IdentifiedReference, ManyToOne, OneToMany, OneToOne, PrimaryKey, PrimaryKeyProp, PrimaryKeyType, Property } from "@mikro-orm/core";
+import { Collection, Entity, IdentifiedReference, ManyToOne, OneToMany, PrimaryKey, PrimaryKeyProp, PrimaryKeyType, Property } from "@mikro-orm/core";
 import type { Player } from "./Player.js";
 import { StickybanMatchedCid } from "./StickybanMatchedCid.js";
 import { StickybanMatchedCkey } from "./StickybanMatchedCkey.js";

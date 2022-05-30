@@ -48,7 +48,12 @@ export async function getUsersInGroups(...groupId: number[]): Promise<Map<number
 
   const ret = new Map<number, ForumsGroup>();
   for (const group of data.groups) {
-    ret.set(group.user_group_id, group);
+    ret.set(group.user_group_id, {
+      name: group.name,
+      user_group_id: group.user_group_id,
+      users: group.users,
+      priority: group.priority,
+    });
   }
 
   return ret;
@@ -79,11 +84,17 @@ export const getFrontpageStaff = moize(
       config.get<number>("forums.groups.staff"),
     );
 
+    const host = groups.get(config.get<number>("forums.groups.host"));
+    const council = groups.get(config.get<number>("forums.groups.council"));
+    const headdev = groups.get(config.get<number>("forums.groups.headdev"));
+    const staff = groups.get(config.get<number>("forums.groups.staff"));
+    if (staff) staff.users = staff.users.filter(user => !host?.users.includes(user) && !council?.users.includes(user) && !headdev?.users.includes(user));
+
     return {
-      host: groups.get(config.get<number>("forums.groups.host")),
-      council: groups.get(config.get<number>("forums.groups.council")),
-      headdev: groups.get(config.get<number>("forums.groups.headdev")),
-      staff: groups.get(config.get<number>("forums.groups.staff")),
+      host,
+      council,
+      headdev,
+      staff,
     };
   },
   {

@@ -1,5 +1,35 @@
+diff --git a/node_modules/fastify-http-errors-enhanced/dist/handlers.js b/node_modules/fastify-http-errors-enhanced/dist/handlers.js
+index 2857156..cf4e693 100644
+--- a/node_modules/fastify-http-errors-enhanced/dist/handlers.js
++++ b/node_modules/fastify-http-errors-enhanced/dist/handlers.js
+@@ -57,6 +57,10 @@ export function handleErrors(error, request, reply) {
+     };
+     addAdditionalProperties(body, error);
+     // Send the error back
++    const handler = request[kHttpErrorsEnhancedConfiguration]["handler"]
++    let handled = false;
++    reply.code(statusCode).headers(headers ?? {})
++    if(handler) handled = handler(request, reply, body, error);
+     // eslint-disable-next-line @typescript-eslint/no-floating-promises
+-    reply.code(statusCode).headers(headers ?? {}).type('application/json').send(body);
++    if(!handled) reply.type('application/json').send(body);
+ }
+diff --git a/node_modules/fastify-http-errors-enhanced/dist/index.js b/node_modules/fastify-http-errors-enhanced/dist/index.js
+index 9347088..9cd6332 100644
+--- a/node_modules/fastify-http-errors-enhanced/dist/index.js
++++ b/node_modules/fastify-http-errors-enhanced/dist/index.js
+@@ -12,7 +12,8 @@ export const plugin = fastifyPlugin(function(instance, options, done1) {
+         hideUnhandledErrors: options.hideUnhandledErrors ?? isProduction,
+         convertValidationErrors: options.convertValidationErrors ?? true,
+         responseValidatorCustomizer: options.responseValidatorCustomizer,
+-        allowUndeclaredResponses: options.allowUndeclaredResponses ?? false
++        allowUndeclaredResponses: options.allowUndeclaredResponses ?? false,
++        handler: options.handler
+     };
+     instance.decorate(kHttpErrorsEnhancedConfiguration, null);
+     instance.decorateRequest(kHttpErrorsEnhancedConfiguration, null);
 diff --git a/node_modules/fastify-http-errors-enhanced/dist/validation.js b/node_modules/fastify-http-errors-enhanced/dist/validation.js
-index 46cf2b4..c54b7c0 100644
+index 46cf2b4..4b7065a 100644
 --- a/node_modules/fastify-http-errors-enhanced/dist/validation.js
 +++ b/node_modules/fastify-http-errors-enhanced/dist/validation.js
 @@ -225,11 +225,14 @@ export function compileResponseValidationSchema(configuration) {
@@ -21,3 +51,26 @@ index 46cf2b4..c54b7c0 100644
          });
          compiler.addSchema(Object.values(instance.getSchemas()));
          compiler.addKeyword('example');
+diff --git a/node_modules/fastify-http-errors-enhanced/types/index.d.ts b/node_modules/fastify-http-errors-enhanced/types/index.d.ts
+index 69dc76b..91a882f 100644
+--- a/node_modules/fastify-http-errors-enhanced/types/index.d.ts
++++ b/node_modules/fastify-http-errors-enhanced/types/index.d.ts
+@@ -1,7 +1,17 @@
+ /// <reference types="node" />
+ import { FastifyPluginOptions } from 'fastify';
++import type { FastifyRequest, FastifyReply } from 'fastify';
++import { HttpError } from "http-errors-enhanced/types/base.js";
+ export * from './handlers.js';
+ export * from './interfaces.js';
+ export { convertValidationErrors, niceJoin, validationMessagesFormatters } from './validation.js';
+-export declare const plugin: import("fastify").FastifyPluginCallback<FastifyPluginOptions, import("http").Server>;
++export interface EnhancedError {
++  statusCode: number
++  error: string
++  message: string
++  failedValidations: Validations
++}
++export declare const plugin: import("fastify").FastifyPluginCallback<FastifyPluginOptions & {
++  handler?: (req: FastifyRequest, rep: FastifyReply, error: EnhancedError, originalError: HttpError & EnhancedError) => boolean | undefined;
++}, import("http").Server>;
+ export default plugin;

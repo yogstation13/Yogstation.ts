@@ -24,26 +24,3 @@ index b461467..ea35b18 100644
  exports.chalkJson = chalkJson;
  const chalkStringArray = (a) => `[ ${a.map(exports.chalkString).join(', ')} ]`;
  exports.chalkStringArray = chalkStringArray;
-diff --git a/node_modules/@mgcrea/pino-pretty-compact/lib/utils/format.js b/node_modules/@mgcrea/pino-pretty-compact/lib/utils/format.js
-index 0f9150b..69d05d1 100644
---- a/node_modules/@mgcrea/pino-pretty-compact/lib/utils/format.js
-+++ b/node_modules/@mgcrea/pino-pretty-compact/lib/utils/format.js
-@@ -43,12 +44,15 @@ const formatRequestId = (id) => chalk_1.default.magenta(`#${id}`);
- exports.formatRequestId = formatRequestId;
- const formatPlugin = (plugin) => chalk_1.default.gray(`(${plugin})`);
- exports.formatPlugin = formatPlugin;
--const formatErrorStack = (stack) => chalk_1.default.gray(stack.replace(CWD_REGEX, '.').split(os_1.EOL).slice(1).join(os_1.EOL));
-+//Makes it deal with stack being an array thanks to the error handler
-+const formatErrorStack = (stack) => chalk_1.default.gray(stack.join("\n").replace(CWD_REGEX, '.').split(os_1.EOL).slice(1).join(os_1.EOL));
- exports.formatErrorStack = formatErrorStack;
- const formatError = (error) => {
--    const { statusCode = 500, type = error.name, stack = `${os_1.EOL}    at ???` } = error;
-+    //Removes handling for error type thanks to the error handler
-+    const { statusCode = 500, stack = `${os_1.EOL}    at ???` } = error;
-     const isInternalError = !statusCode || statusCode >= 500;
--    const output = [chalk_1.default[isInternalError ? 'red' : 'yellow'](`×${type} `), chalk_1.default.magenta(statusCode)];
-+    //Removes handling for error type thanks to the error handler
-+    const output = [chalk_1.default[isInternalError ? 'red' : 'yellow'](`×`), chalk_1.default.magenta(statusCode)];
-     if (isInternalError) {
-         output.push(chalk_1.default.red(`: ${error.message}`), os_1.EOL, exports.formatErrorStack(stack));
-     }

@@ -16,7 +16,7 @@ const generateId = hyperid({
 
 const fastify = Fastify({
   logger: {
-    prettyPrint: false,
+    prettyPrint: process.env["NODE_ENV"] !== "production",
     //@ts-expect-error they messed up their export somehow
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     prettifier: prettifier.default,

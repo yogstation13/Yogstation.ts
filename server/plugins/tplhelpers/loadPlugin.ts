@@ -1,4 +1,3 @@
-import type { EtaConfig } from "eta/dist/types/config.js";
 import type { AstObject } from "eta/dist/types/parse.js";
 import type { FastifyPluginCallback } from "fastify";
 import fp from "fastify-plugin";
@@ -25,7 +24,7 @@ var load = tpl => {
 function layout`,
       );
     },
-    processAST: (ast: Array<AstObject>, _env: EtaConfig) => {
+    processAST: (ast: Array<AstObject>) => {
       for (const token of ast) {
         //Make sure it's a template object
         // noinspection SuspiciousTypeOfGuard

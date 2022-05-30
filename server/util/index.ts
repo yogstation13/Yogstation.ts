@@ -1,9 +1,11 @@
 import { requestContext } from "@fastify/request-context";
 import RelativeTime from "@yaireo/relative-time";
-import type { preValidationHookHandler } from "fastify";
+import type { FastifyRequest, preValidationHookHandler } from "fastify";
+import { convertValidationErrors, Validations } from "fastify-http-errors-enhanced";
+import type { RequestSection } from "fastify-http-errors-enhanced/types/interfaces.js";
 
 export function ckeyify(key: string) {
-  return key.replaceAll(/[^\w-@]/g, "").toLowerCase();
+  return key.replaceAll(/[^a-z0-9]/g, "").toLowerCase();
 }
 
 export type WebPermission = typeof webPermissions extends ReadonlyArray<infer T> ? T : never;
@@ -68,3 +70,17 @@ const formatter = new RelativeTime({
 export function toRelativeTime(date: Date): string {
   return formatter.from(date);
 }
+
+export function getValidations(req: FastifyRequest): Validations | undefined {
+  if (!req.validationError) return;
+
+  const error = req.validationError;
+  const section = error.message.match(/^\w+/)?.[0] as RequestSection | undefined;
+  if (!section) return;
+
+  // @ts-expect-error bruh
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  return convertValidationErrors(section, req[section], error.validation);
+}
+
+export const ckeyPattern = /^[a-z0-9]{2,32}$/.source;
